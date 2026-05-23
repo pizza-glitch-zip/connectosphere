@@ -1,0 +1,699 @@
+/* ============================================
+   Connectosphere — Connectosphere stylesheet
+   ============================================
+   Design tokens, base, layout, and component styles
+   for all pages: index, intro, location, team, rewatch.
+   ============================================ */
+
+
+/* ============================================
+   1. DESIGN TOKENS
+   ============================================ */
+:root {
+  /* Color palette — extracted from the painterly artwork */
+  --bg-deep:        #0a0e10;   /* deepest void */
+  --bg-base:        #0e1416;   /* page background */
+  --bg-elevated:    #131b1f;   /* card/elevated surfaces */
+  --bg-soft:        #1a2428;   /* subtle elevations */
+
+  --ink-bright:     #d8e3e6;   /* primary text */
+  --ink-soft:       #9aaab0;   /* secondary text */
+  --ink-faint:      #5e6e74;   /* tertiary / hints */
+  --ink-divider:    #1f2b30;   /* dividers, borders */
+
+  --cyan-bright:    #4dd4e0;   /* primary accent — monolith glow */
+  --cyan-soft:      #2a8a93;   /* muted accent */
+  --cyan-dim:       #14454a;   /* dim accent, used in backgrounds */
+  --cyan-glow:      0 0 24px rgba(77, 212, 224, 0.4);
+  --cyan-glow-soft: 0 0 12px rgba(77, 212, 224, 0.25);
+
+  --umber:          #4a3a2a;   /* warm earth, soil */
+
+  /* Typography */
+  --font-display: 'Cormorant Garamond', 'Noto Serif KR', Georgia, serif;
+  --font-body:    'Noto Serif KR', 'Cormorant Garamond', Georgia, serif;
+  --font-mono:    'SF Mono', 'JetBrains Mono', Menlo, monospace;
+
+  /* Spacing scale (rem) */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4.5rem;
+  --space-7: 6rem;
+
+  /* Layout */
+  --content-max-width: 760px;
+  --content-padding-x: clamp(1.25rem, 4vw, 2.5rem);
+
+  /* Animation curves */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+
+/* ============================================
+   2. RESET & BASE
+   ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--ink-bright);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--cyan-bright);
+  text-decoration: none;
+  transition: color 0.3s var(--ease-out);
+}
+
+a:hover {
+  color: var(--ink-bright);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+/* Background texture — subtle film grain for atmosphere */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(20, 69, 74, 0.15), transparent 50%),
+    radial-gradient(circle at 85% 80%, rgba(20, 69, 74, 0.1), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+
+/* ============================================
+   3. MAIN PAGE — TITLE SCREEN (State 1)
+   ============================================ */
+.page--main {
+  margin: 0;
+  background: var(--bg-deep);
+  overflow: hidden;
+}
+
+.title-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at center, rgba(20, 69, 74, 0.12) 0%, transparent 70%),
+    var(--bg-deep);
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 1.2s var(--ease-in-out);
+}
+
+.title-screen.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.title-screen__inner {
+  text-align: center;
+  padding: var(--content-padding-x);
+  animation: title-fade-in 1.8s var(--ease-out) 0.2s both;
+}
+
+@keyframes title-fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.title__main {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--ink-bright);
+  text-shadow: 0 0 30px rgba(77, 212, 224, 0.15);
+}
+
+.title__sub {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  letter-spacing: 0.4em;
+  color: var(--ink-soft);
+  text-transform: none;
+  margin-top: var(--space-1);
+}
+
+.title__caption {
+  margin-top: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+/* Enter button — cyan glow with pulse */
+.enter-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 168px;
+  height: 56px;
+  border: 1px solid var(--cyan-soft);
+  background: transparent;
+  color: var(--cyan-bright);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.5s var(--ease-out);
+  box-shadow: 0 0 0 rgba(77, 212, 224, 0);
+}
+
+.enter-btn:hover,
+.enter-btn:focus-visible {
+  border-color: var(--cyan-bright);
+  color: var(--ink-bright);
+  box-shadow: 0 0 32px rgba(77, 212, 224, 0.3);
+  outline: none;
+}
+
+.enter-btn:active {
+  transform: scale(0.98);
+}
+
+.enter-btn__label {
+  position: relative;
+  z-index: 2;
+}
+
+.enter-btn__pulse {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(77, 212, 224, 0.15), transparent 70%);
+  animation: enter-pulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes enter-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 1; }
+}
+
+
+/* ============================================
+   4. MAIN PAGE — VIDEO STAGE (State 2)
+   ============================================ */
+.video-stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 1s var(--ease-in-out);
+  pointer-events: none;
+}
+
+.video-stage.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.video-stage__video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--bg-deep);
+}
+
+
+/* ============================================
+   5. MAIN PAGE — END SCENE (State 3)
+   ============================================ */
+.end-scene {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s var(--ease-in-out);
+  pointer-events: none;
+}
+
+.end-scene.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.end-scene__bg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Wrapper for hotspots — matches image's actual rendered box */
+/* We use object-fit: contain on the image, so we need to overlay hotspots
+   on the *visible image area*. To keep this simple in pure CSS, hotspots
+   are positioned via absolute % on the .end-scene container, which means
+   they will scale with the viewport. On wide screens this matches well;
+   if the image is letterboxed, hotspots align with the container, not
+   the image. JS will recalculate the image's actual rendered box and
+   adjust hotspot positioning. See script.js. */
+
+
+/* ============================================
+   6. HOTSPOTS — clickable artifact overlays
+   ============================================ */
+.hotspot {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.6s var(--ease-out);
+  z-index: 2;
+  /* Hotspot is invisible by default — only the marker shows */
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.hotspot:focus-visible {
+  outline: 2px solid var(--cyan-bright);
+  outline-offset: 4px;
+}
+
+/* Hotspot marker — small pulsing dot to indicate clickability */
+.hotspot__marker {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cyan-bright);
+  box-shadow: 0 0 12px rgba(77, 212, 224, 0.7);
+  animation: marker-pulse 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes marker-pulse {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1;   transform: translateX(-50%) scale(1.25); }
+}
+
+/* Slightly faster pulse for already-glowing artifacts (data, rewatch) */
+.hotspot__marker--glow {
+  animation-duration: 1.8s;
+  background: #7eecf5;
+  box-shadow: 0 0 18px rgba(126, 236, 245, 0.8);
+}
+
+/* Hotspot label — only appears on hover */
+.hotspot__label {
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--cyan-bright);
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.4s var(--ease-out);
+  pointer-events: none;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8), 0 0 16px rgba(77, 212, 224, 0.3);
+}
+
+.hotspot:hover .hotspot__label,
+.hotspot:focus-visible .hotspot__label {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Hover state — subtle glow border around the hotspot area */
+.hotspot:hover,
+.hotspot:focus-visible {
+  background: radial-gradient(ellipse at center, rgba(77, 212, 224, 0.08), transparent 70%);
+  border-color: rgba(77, 212, 224, 0.25);
+}
+
+.hotspot:hover .hotspot__marker,
+.hotspot:focus-visible .hotspot__marker {
+  animation-duration: 1s;
+  transform: translateX(-50%) scale(1.4);
+}
+
+
+/* ============================================
+   7. CONTENT PAGES — shared layout
+   (intro, location, team, rewatch)
+   ============================================ */
+.page--content {
+  background: var(--bg-base);
+  min-height: 100vh;
+  padding: var(--space-5) 0 var(--space-7);
+  position: relative;
+}
+
+.page-shell {
+  position: relative;
+  z-index: 2;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 var(--content-padding-x);
+}
+
+/* Page header — back link + page title */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--ink-divider);
+}
+
+.page-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  width: fit-content;
+  transition: color 0.3s var(--ease-out);
+}
+
+.page-header__back:hover {
+  color: var(--cyan-bright);
+}
+
+.page-header__back::before {
+  content: '←';
+  font-size: 1.2em;
+  transition: transform 0.3s var(--ease-out);
+}
+
+.page-header__back:hover::before {
+  transform: translateX(-4px);
+}
+
+.page-header__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.4em;
+  color: var(--cyan-soft);
+  text-transform: uppercase;
+  margin-top: var(--space-3);
+}
+
+.page-header__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.15;
+  color: var(--ink-bright);
+  letter-spacing: 0.01em;
+}
+
+.page-header__title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cyan-bright);
+}
+
+
+/* ============================================
+   8. CONTENT — INTRO (전시 서문)
+   ============================================ */
+.intro-text {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--ink-bright);
+}
+
+.intro-text p {
+  margin-bottom: var(--space-3);
+}
+
+.intro-text p:first-letter {
+  font-family: var(--font-display);
+  font-size: 3.5em;
+  float: left;
+  line-height: 0.9;
+  margin: 0.05em 0.12em -0.05em 0;
+  color: var(--cyan-bright);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.intro-text em {
+  font-style: italic;
+  color: var(--cyan-bright);
+}
+
+
+/* ============================================
+   9. CONTENT — LOCATION (로케이션)
+   ============================================ */
+.info-block {
+  display: grid;
+  grid-template-columns: minmax(120px, 160px) 1fr;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--ink-divider);
+}
+
+.info-block:last-child {
+  border-bottom: none;
+}
+
+.info-block__label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  padding-top: 0.4em;
+}
+
+.info-block__value {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--ink-bright);
+}
+
+.info-block__value strong {
+  font-weight: 600;
+  color: var(--cyan-bright);
+  font-family: var(--font-display);
+  font-size: 1.3em;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 600px) {
+  .info-block {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+}
+
+
+/* ============================================
+   10. CONTENT — TEAM (팀 소개)
+   ============================================ */
+.team-statement {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  line-height: 1.6;
+  color: var(--ink-bright);
+  margin-bottom: var(--space-6);
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--cyan-soft);
+}
+
+.team-roster {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.team-member {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--ink-divider);
+  align-items: baseline;
+}
+
+.team-member:last-child {
+  border-bottom: none;
+}
+
+.team-member__name {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: var(--ink-bright);
+  letter-spacing: 0.01em;
+}
+
+.team-member__role {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  text-align: right;
+}
+
+
+/* ============================================
+   11. CONTENT — REWATCH (인트로 다시보기)
+   ============================================ */
+.rewatch-video {
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  background: var(--bg-deep);
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.rewatch-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--bg-deep);
+}
+
+.rewatch-caption {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: var(--space-3);
+}
+
+
+/* ============================================
+   12. RESPONSIVE TWEAKS
+   ============================================ */
+@media (max-width: 768px) {
+  /* On narrow viewports, the 21:9 image is small and centered.
+     Hotspots use percentages so they should still align with the image,
+     but markers and labels need to be more visible. */
+  .hotspot__marker {
+    width: 8px;
+    height: 8px;
+  }
+
+  .hotspot__label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    bottom: -26px;
+  }
+
+  .title__main {
+    letter-spacing: 0.01em;
+  }
+
+  .title__sub {
+    letter-spacing: 0.3em;
+  }
+}
+
+@media (max-width: 480px) {
+  /* On phones, show labels by default since hover doesn't exist */
+  .hotspot__label {
+    opacity: 0.85;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .enter-btn {
+    width: 152px;
+    height: 52px;
+  }
+}
+
+
+/* ============================================
+   13. ACCESSIBILITY — reduced motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .enter-btn__pulse,
+  .hotspot__marker {
+    animation: none;
+  }
+}
