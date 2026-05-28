@@ -498,7 +498,7 @@ body::before {
 
 .intro-text p:first-letter {
   font-family: var(--font-display);
-  font-size: 3.5em;
+  font-size: 1.8em;
   float: left;
   line-height: 0.9;
   margin: 0.05em 0.12em -0.05em 0;
