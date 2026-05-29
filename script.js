@@ -13,7 +13,7 @@
    ============================================ */
 const CONFIG = {
   // 📌 박지원님 컴퓨터의 ngrok URL — 세션 만료 시 이 한 줄만 수정
-  dataSiteUrl: "https://unwed-evasion-cabbage.ngrok-free.dev/",
+  dataSiteUrl: "https://huggingface.co/spaces/zipoleon/CONNECTOSPHERE",
 
   // 데이터 사이트가 비활성일 때 보일 메시지 (선택사항)
   dataSiteOfflineMessage:
